@@ -1,0 +1,26 @@
+---
+doom_emacs_config:
+  user_name: 'Sander Petersson'
+  user_email: 'me@sanderp.se'
+  theme: 'doom-old-hope'
+  org:
+    directory: '~/Documents/emacs-org'
+    index: '~/.emacs.d/.local/etc/index'
+    diary: '~/Documents/emacs-org/diary.org'
+  settings:
+    display_line_numbers: True
+doom_emacs_init:
+  completion:
+    company: True
+    helm: False
+    ido: False
+    ivy: False
+    vertico: True
+  ui:
+    doom: True
+    doom_dashboard: True
+    doom_quit: True
+    hl_todo: True
+# doom_emacs_packages:
+#   puppet-mode: True
+#   lsb-dart: True
