@@ -18,19 +18,19 @@
 
 (doom! :input
         :completion
-        {% if doom_emacs_init.company %}
+        {% if doom_emacs_init.completion.company %}
         company
         {% endif %}
-        {% if doom_emacs_init.helm %}
+        {% if doom_emacs_init.completion.helm %}
         helm
         {% endif %}
-        {% if doom_emacs_init.ido %}
+        {% if doom_emacs_init.completion.ido %}
         ido
         {% endif %}
-        {% if doom_emacs_init.ivy %}
+        {% if doom_emacs_init.completion.ivy %}
         ivy
         {% endif %}
-        {% if doom_emacs_init.vertico %}
+        {% if doom_emacs_init.completion.vertico %}
         vertico
         {% endif %}
 
