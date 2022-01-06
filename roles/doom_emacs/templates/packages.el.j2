@@ -10,7 +10,7 @@
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
-{% if doom_emacs_packages %}
+{% if doom_emacs_packages is defined %}
 {% for package in doom_emacs_packages %}
 (package! {{ package }})
 {% endfor %}

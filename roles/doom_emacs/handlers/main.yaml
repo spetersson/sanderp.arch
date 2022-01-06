@@ -1,13 +1,13 @@
 ---
+- name: install doom emacs
+  shell: ~/.emacs.d/bin/doom -y install
+
+- name: sync doom emacs
+  shell: ~/.emacs.d/bin/doom -y sync
+
 - name: restart emacs
   systemd:
     name: emacs
     state: restarted
     enabled: True
     scope: user
-
-- name: sync doom emacs
-  shell: ~/.emacs.d/bin/doom sync -y
-
-- name: install doom emacs
-  shell: ~/.emacs.d/bin/doom install -y
