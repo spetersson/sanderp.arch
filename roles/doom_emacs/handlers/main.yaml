@@ -7,7 +7,7 @@
     scope: user
 
 - name: sync doom emacs
-  shell: ~/.emacs.d/bin/doom sync
+  shell: ~/.emacs.d/bin/doom sync -y
 
 - name: install doom emacs
-  shell: ~/.emacs.d/bin/doom install
+  shell: ~/.emacs.d/bin/doom install -y

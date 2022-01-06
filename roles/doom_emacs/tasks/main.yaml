@@ -1,0 +1,75 @@
+---
+- name: Create .doom.d directory
+  file:
+    path: ~/.doom.d
+    state: directory
+    mode: '0750'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+
+- name: Install emacs
+  pacman:
+    name: emacs
+    state: present
+
+- name: Generate doom emacs config.el
+  template:
+    src: config.el.j2
+    dest: ~/.doom.d/config.el
+    mode: '0640'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  notify:
+    - sync doom emacs
+    - restart emacs
+
+- name: Generate doom emacs init.el
+  template:
+    src: init.el.j2
+    dest: ~/.doom.d/init.el
+    mode: '0640'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  notify:
+    - sync doom emacs
+    - restart emacs
+
+- name: Generate doom emacs packages.el
+  template:
+    src: packages.el.j2
+    dest: ~/.doom.d/packages.el
+    mode: '0640'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  notify:
+    - sync doom emacs
+    - restart emacs
+
+- name: Clone doom emacs git repo
+  git:
+    repo: https://github.com/hlissner/doom-emacs
+    dest: ~/.emacs.d
+    depth: 1
+    update: False
+  notify:
+    - install doom emacs
+    - restart emacs
+
+- name: Setup systemd unit for emacs
+  template:
+    src: emacs.service.j2
+    dest: /usr/lib/systemd/user/emacs.service
+    owner: root
+    group: root
+    mode: '0644'
+  become: True
+  notify:
+    - restart emacs
+
+- name: Setup org directory
+  file:
+    path: "{{ doom_emacs_config.org.directory }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0750'
