@@ -35,9 +35,9 @@
 (setq org-agenda-diary-file "{{ doom_emacs_config.org.diary }}")
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-{{% if doom_emacs_config.settings.display_line_numbers %}}
+{% if doom_emacs_config.settings.display_line_numbers %}
 (setq display-line-numbers-type t)
-{{% endif %}}
+{% endif %}
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;

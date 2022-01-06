@@ -18,21 +18,21 @@
 
 (doom! :input
         :completion
-        {{% if doom_emacs_init.company %}}
+        {% if doom_emacs_init.company %}
         company
-        {{% endif %}}
-        {{% if doom_emacs_init.helm %}}
+        {% endif %}
+        {% if doom_emacs_init.helm %}
         helm
-        {{% endif %}}
-        {{% if doom_emacs_init.ido %}}
+        {% endif %}
+        {% if doom_emacs_init.ido %}
         ido
-        {{% endif %}}
-        {{% if doom_emacs_init.ivy %}}
+        {% endif %}
+        {% if doom_emacs_init.ivy %}
         ivy
-        {{% endif %}}
-        {{% if doom_emacs_init.vertico %}}
+        {% endif %}
+        {% if doom_emacs_init.vertico %}
         vertico
-        {{% endif %}}
+        {% endif %}
 
        :ui
        ;;deft              ; notational velocity for Emacs
