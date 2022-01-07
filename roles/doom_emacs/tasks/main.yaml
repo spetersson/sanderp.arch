@@ -11,6 +11,7 @@
   pacman:
     name: emacs
     state: present
+  become: True
 
 - name: Generate doom emacs config.el
   template:
