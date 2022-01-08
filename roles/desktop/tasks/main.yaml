@@ -1,0 +1,12 @@
+---
+- name: Install official required packages
+  pacman:
+    name:
+      - xorg
+      - xorg-apps
+      - bspwm
+      - sxhkd
+      - xsecurelock
+      - scrot
+      - lightdm-webkit2-greeter
+      - ttf-fira-code
