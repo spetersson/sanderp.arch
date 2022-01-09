@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  roles:
+    - sanderp.arch.base
+    - sanderp.arch.doom_emacs
+    - sanderp.arch.desktop
