@@ -6,6 +6,7 @@
     mode: '0644'
     owner: root
     group: root
+  become: True
 
 - name: Install base programs
   pacman:
@@ -27,9 +28,20 @@
     dest: ~/Downloads/paru-bin
     update: False
 
-- name: Make and install paru-bin
-  shell: makepkg -si
+- name: Make paru package
+  shell: makepkg
   args:
     chdir: ~/Downloads/paru-bin
-    creates: /usr/bin/paru
+    creates: ~/Downloads/paru-bin/paru-bin*
+
+- name: Register package path
+  shell: makepkg --packagelist
+  args:
+    chdir: ~/Downloads/paru-bin
+  register: paru
+
+- name: Install paru
+  pacman:
+    name: "{{ paru.stdout }}"
+    state: present
   become: True
