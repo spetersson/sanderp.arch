@@ -1,0 +1,4 @@
+bspwm:
+  useDynamicDesktop: False
+termite:
+  theme: dark

@@ -1,0 +1,89 @@
+---
+- name: Install official required packages
+  pacman:
+    name:
+      - xorg
+      - xorg-apps
+      - bspwm
+      - sxhkd
+      - xsecurelock
+      - scrot
+      - lightdm-webkit2-greeter
+      - ttf-fira-code
+      - dmenu
+  become: True
+
+- name: Install AUR packages
+  pacman:
+    name:
+      - termite
+      - polybar
+      - nerd-fonts-ubuntu-mono
+      - ttf-line-awesome
+      - spotify
+    executable: paru
+
+- name: Generate lightdm.conf
+  template:
+    src: lightdm.conf.j2
+    dest: /etc/lightdm.conf
+    owner: root
+    group: root
+    mode: '0644'
+  become: True
+  notify:
+    - restart lightdm
+
+- name: Create directories for user config files
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0750'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+  loop:
+    - ~/.config
+    - ~/.config/bspwm
+    - ~/.config/sxhkd
+    - ~/.config/polybar
+    - ~/.config/termite
+
+- name: Generate bspwmrc config
+  template:
+    src: bspwm/bspwmrc.j2
+    dest: ~/.config/bspwm/bspwmrc
+    mode: '0750'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+
+- name: Generate sxhkdrc config
+  template:
+    src: sxhkd/sxhkdrc.j2
+    dest: ~/.config/sxhkd/sxhkdrc
+    mode: '0750'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+
+- name: Generate polybar config
+  template:
+    src: polybar/config.j2
+    dest: ~/.config/polybar/config
+    mode: '0640'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+
+- name: Generate polybar launch script
+  template:
+    src: polybar/launch.sh.j2
+    dest: ~/.config/polybar/launch.sh
+    mode: '0750'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+
+- name: Generate termite config
+  template:
+    src: termite/config.j2
+    dest: ~/.config/termite/config
+    mode: '0640'
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"

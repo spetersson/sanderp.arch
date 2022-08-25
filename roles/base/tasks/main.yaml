@@ -1,6 +1,47 @@
 ---
+- name: Generate pacman.conf
+  template:
+    src: pacman.conf.j2
+    dest: /etc/pacman.conf
+    mode: '0644'
+    owner: root
+    group: root
+  become: True
+
 - name: Install base programs
   pacman:
     name: "{{ base_packages }}"
+    state: present
+  become: True
+
+- name: Create Downloads directory in home-folder
+  file:
+    path: ~/Downloads
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0750'
+
+- name: Clone paru-bin
+  git:
+    repo: https://aur.archlinux.org/paru-bin.git
+    dest: ~/Downloads/paru-bin
+    update: False
+
+- name: Make paru package
+  shell: makepkg
+  args:
+    chdir: ~/Downloads/paru-bin
+    creates: ~/Downloads/paru-bin/paru-bin*
+
+- name: Register package path
+  shell: makepkg --packagelist
+  args:
+    chdir: ~/Downloads/paru-bin
+  register: paru
+
+- name: Install paru
+  pacman:
+    name: "{{ paru.stdout }}"
     state: present
   become: True

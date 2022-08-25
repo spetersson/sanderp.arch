@@ -1,0 +1,67 @@
+#! /bin/sh
+
+setxkbmap se
+nitrogen --restore
+~/.config/polybar/launch.sh
+
+{% if bspwm.useDynamicDesktop == True %}
+
+DISPLAYS_CONNECTED=$(xrandr | grep -w 'connected' | cut -d" " -f1)
+DISPLAYS_DISCONNECTED=$(xrandr | grep -w 'disconnected' | cut -d" " -f1)
+NUM_DISPLAYS_CONNECTED=$(echo "$DISPLAYS_CONNECTED" | wc -l)
+
+if (( $NUM_DISPLAYS_CONNECTED == 1 ))
+then
+    # Set workspaces for one display
+    bspc monitor -d 1 2 3 4 5 6 7
+    for DISPLAY in $DISPLAYS_DISCONNECTED
+    do
+        # Turn off all disconnected displays
+        xrandr --output $DISPLAY --off
+    done
+
+elif (( $NUM_DISPLAYS_CONNECTED >= 2 ))
+then
+    # Set counter variable
+    COUNTER=0
+    for DISPLAY in $DISPLAYS_CONNECTED
+    do
+        let COUNTER=COUNTER+1
+        if (( $COUNTER == 1 )) # First monitor gets one desktop
+        then
+            bspc monitor $DISPLAY -d 7
+        elif (( $COUNTER == 2 )) # Second monitor gets five desktops
+        then
+            bspc monitor $DISPLAY -d 1 2 3 4 5
+        else # Else get desktop 6
+            bspc monitor $DISPLAY -d 6
+        fi
+    done
+    for DISPLAY in $DISPLAYS_DISCONNECTED
+    do
+        # Turn off all disconnected displays
+        xrandr --output $DISPLAY --off
+    done
+fi
+
+{% else %}
+
+bspc monitor -d 1 2 3 4 5
+
+{% endif %}
+
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+bspc config top_padding 25
+bspc config border_width 2
+bspc config window_gap 12
+
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+bspc rule -a Gimp desktop='^8' state=floating follow=on
+bspc rule -a Chromium desktop='^2'
+bspc rule -a mplayer2 state=floating
+bspc rule -a Kupfer.py focus=on
+bspc rule -a Screenkey manage=off

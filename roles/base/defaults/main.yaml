@@ -4,3 +4,5 @@ base_packages:
   - firefox
   - htop
   - vim
+pacman:
+  parallelDownload: 5
